@@ -30,10 +30,10 @@ html = """
                 messages.appendChild(message)
             };
             function sendMessage(event) {
+                event.preventDefault()
                 var input = document.getElementById("messageText")
                 ws.send(input.value)
                 input.value = ''
-                event.preventDefault()
             }
         </script>
     </body>
