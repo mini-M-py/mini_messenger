@@ -1,10 +1,12 @@
 import json
-from .routers import chat
+from .routers import chat, user 
 from fastapi import FastAPI, Request, Response, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
+from . import model
+from .database import engine
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
@@ -18,7 +20,9 @@ app.add_middleware(
 )
 
 app.include_router(chat.router)
+app.include_router(user.router)
 
+model.Base.metadata.create_all(bind=engine)
 @app.get("/")
 async def get(request: Request):
     extensions = request.query_params.get("extensions", {})
