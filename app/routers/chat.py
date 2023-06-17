@@ -1,7 +1,6 @@
-from jinja2 import Template
 from .. import websocket
 import json
-from fastapi import FastAPI, Request, Response, WebSocket, WebSocketDisconnect, APIRouter
+from fastapi import WebSocket, WebSocketDisconnect, APIRouter
 
 router = APIRouter()
 
@@ -27,3 +26,5 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
             }
         data = json.dumps(data)
         await manager.broadcast(data)
+
+

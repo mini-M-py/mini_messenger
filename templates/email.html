@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>OTP Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333333;
+        }
+
+        p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        strong {
+            color: #FF4500;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>verification email</h2>
+        <p>Hi there,</p>
+        <p>Your verification code is: <strong>{{ otp }}</strong></p>
+        <p>Please use this code to verify your account or complete the desired action.</p>
+        <p>This code is valid for a limited time period.</p>
+        <br>
+        <p class="footer">Best regards,</p>
+        <p class="footer">Your Application</p>
+    </div>
+</body>
+</html>

@@ -23,6 +23,8 @@ app.include_router(chat.router)
 app.include_router(user.router)
 
 model.Base.metadata.create_all(bind=engine)
+
+
 @app.get("/")
 async def get(request: Request):
     extensions = request.query_params.get("extensions", {})
