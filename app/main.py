@@ -1,5 +1,5 @@
 import json
-from .routers import chat, user 
+from .routers import chat, user, auth
 from fastapi import FastAPI, Request, Response, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
@@ -21,7 +21,7 @@ app.add_middleware(
 
 app.include_router(chat.router)
 app.include_router(user.router)
-
+app.include_router(auth.router)
 model.Base.metadata.create_all(bind=engine)
 
 

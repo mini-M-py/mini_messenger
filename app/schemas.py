@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, EmailStr
 
 class create_user(BaseModel):
@@ -14,3 +15,15 @@ class user_out(BaseModel):
 
 class verify(BaseModel):
     email:EmailStr
+
+class forget_password(BaseModel):
+    email: EmailStr
+    new_password: str
+    otp: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class Token_data(BaseModel):
+    id: Optional[str] = None
