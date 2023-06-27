@@ -8,6 +8,7 @@ class create_user(BaseModel):
     otp:str
 
 class user_out(BaseModel):
+    id: int
     user_name: str
 
     class Config:
@@ -22,6 +23,7 @@ class forget_password(BaseModel):
     otp: str
 
 class delete_user(BaseModel):
+
     password: str
 
 class Token(BaseModel):

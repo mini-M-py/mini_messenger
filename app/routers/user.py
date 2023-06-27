@@ -1,3 +1,4 @@
+from typing import List, Optional
 from fastapi import Response, status, HTTPException, APIRouter, Depends
 
 from .. import model,schemas, utils, email, oauth2
@@ -5,7 +6,10 @@ from sqlalchemy.orm import Session
 
 from .. database import get_db, engine
 
-router = APIRouter(tags=["User"])
+router = APIRouter(
+    tags=["User"],
+    prefix="/users"
+    )
  
 
 
@@ -59,4 +63,9 @@ def delete_user(user: schemas.delete_user, db: Session = Depends(get_db), user_i
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-    
+
+@router.get('/',response_model=List[schemas.user_out])
+def get_user( db: Session = Depends(get_db), user_id: int = Depends(oauth2.get_current_user),search: Optional[str] = ""):
+    users = db.query(model.User).filter(model.User.user_name.contains(search)).all()
+
+    return users
