@@ -1,11 +1,11 @@
-from fastapi import status, HTTPException, APIRouter, Depends
+from fastapi import Response, status, HTTPException, APIRouter, Depends
 
-from .. import model,schemas, utils, email
+from .. import model,schemas, utils, email, oauth2
 from sqlalchemy.orm import Session
 
 from .. database import get_db, engine
 
-router = APIRouter()
+router = APIRouter(tags=["User"])
  
 
 
@@ -39,3 +39,24 @@ def verify(user: schemas.verify,db: Session = Depends(get_db)):
     email.send_email(user.email, otp)
     utils.save_otp(user.email, otp)
     return {"message":"otp has been sent to your email."}
+
+@router.delete('/')
+def delete_user(user: schemas.delete_user, db: Session = Depends(get_db), user_id: int = Depends(oauth2.get_current_user)):
+    current_user = int(user_id.id)
+    #seraching user on database
+
+    user_query = db.query(model.User).filter(model.User.id == current_user)
+    user_found = user_query.first()
+
+    if user_found == None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"server busy!!, Please relogin")
+    
+    #verifying password
+    if not utils.verify(user_found.password, user.password):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f'InvalidCredential')
+    
+    user_query.delete(synchronize_session=False)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+    

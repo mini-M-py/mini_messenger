@@ -21,6 +21,9 @@ class forget_password(BaseModel):
     new_password: str
     otp: str
 
+class delete_user(BaseModel):
+    password: str
+
 class Token(BaseModel):
     access_token: str
     token_type: str
