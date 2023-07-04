@@ -7,9 +7,28 @@ function handleResize() {
     isScrollAtBottom = conversationDiv.scrollHeight - conversationDiv.scrollTop === conversationDiv.clientHeight;
 }
 var client_id = Date.now()
+function home(token){
+    fetch(`http://127.0.0.1:8000/`,{
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        }
+    }).then(res => {
+        if (res.status === 401) {
+            window.location.href = 'login.html'
+        } else {
+            return res.json();
+        }
+    })
+}
+token = localStorage.getItem('token')
+console.log('token ' + token)
+home(token)
 document.querySelector("#ws-id").textContent = client_id
-var ws = new WebSocket(`wss://${location.host}/ws/${client_id}`)
+var ws = new WebSocket(`ws://${location.host}/ws/${client_id}`)
 ws.onmessage = function (event) {
+    var token = localStorage.getItem('token')
+    ws.setRequestHeader('Authorization', 'Bearer ' + token)
     var data = JSON.parse(event.data)
     console.log(data)
     var clientId = data.client_id

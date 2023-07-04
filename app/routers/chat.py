@@ -1,6 +1,6 @@
-from .. import websocket
+from .. import websocket, oauth2
 import json
-from fastapi import WebSocket, WebSocketDisconnect, APIRouter
+from fastapi import WebSocket, WebSocketDisconnect, APIRouter, Depends
 
 router = APIRouter()
 
