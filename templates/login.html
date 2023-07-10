@@ -1,62 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .form1 input{
-            display: block;
-            padding: 10px;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        button{
-            width: 80%;
-            height: 30px;
-        }
-        .warning{
-            display: none;
-            color: white;
-            background-color: rgb(230, 116, 116);
-            opacity: 80%;
-            padding: 3px;
-            margin-bottom: 3px;
-            width: 30%;
-        }
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link href="static/css/login.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="center">
+      <h1>Login</h1>
+      <form method="post">
+        <div class="txt_field">
+          <input name="username" type="email" required>
+          <span></span>
+          <label>Email</label>
+        </div>
+        <div class="txt_field">
+          <input name = "password" type="password" required>
+          <span></span>
+          <label>Password</label>
+        </div>
+        <div class="pass"><a href="/forget_password">Forgot Password?</a> </div>
+        <input type="submit" value="Login">
+        <div class="signup_link">
+          Not a member? <a href="#">Signup</a>
+        </div>
+      </form>
+    </div>
 
-    </style>
-</head>
-<body>
-    <small class="warning">invalid username and password</small>
-    <form class="form1">
-        <input type="text" placeholder="Email" name="username">
-        <input  type="password" placeholder="password" name="password">
-        <button type="submit">Log in</button>
-
-    </form>
-    
-    <script>
-        let formEl = document.querySelector('.form1');
-        let warning = document.querySelector('.warning')
-        formEl.addEventListener('submit', event => {
-            event.preventDefault();
-
-            let formData = new FormData(formEl)
-            let data = new URLSearchParams(formData)
-            fetch('http://127.0.0.1:8000/login', {
-                method: 'POST',
-                body: data
-
-            }).then(res => res.json())
-                .then(data => {
-                    if (data.access_token) {
-                        localStorage.setItem('token', data.access_token)
-                    } else {
-                        warning.style.display = 'block'
-                    }
-                }).catch(error => console.log(error))
-        })
-    </script>
-</body>
+  </body>
 </html>
