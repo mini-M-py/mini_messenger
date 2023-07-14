@@ -14,7 +14,7 @@
         <h1>Forget?</h1>
         <form method="post">
             <div class="txt_field" id="email">
-                <input name="username" type="email" required>
+                <input name="email" type="email" required>
                 <span></span>
                 <label>Email</label>
             </div>
@@ -36,52 +36,7 @@
         </form>
     </div>
 
-    <script>
-        var otp = document.getElementById('OTP')
-        var email = document.getElementById('email')
-        var newPassword = document.getElementById('newPassword')
-        var warning = document.querySelector('.warning')
-        const user = {
-            email: document.querySelector('input[name="username"]').value,
-        };
-
-        warning.style.display = "none"
-        newPassword.style.display = "none"
-        otp.style.display = "none"
-        const form_button = document.getElementById('input')
-
-        function showOtp() {
-
-            fetch('http://127.0.0.1:8000/users/verify', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user)
-            }).then(res => {
-                if (res.status === 500) {
-                    console.log("cannot send email")
-                }
-                else if (res.status === 422) {
-                    console.log('invalid credential')
-                }
-                return res.json();
-            }).then(data => {
-                otpSent = true;
-                sendBtn.innerText = "Sent";
-                otpText.innerText = "Check your email for the OTP.";
-                hideLoadingOverlay()
-            }).catch(error => console.log(error))
-
-            otp.style.display = "block"
-            newPassword.style.display = "block"
-            warning.style.display = "block"
-            email.style.display = "none"
-            form_button.innerText = "OK"
-
-        }
-        form_button.onclick = showOtp
-    </script>
+    <script src="/static/js/forget.js"></script>
 </body>
 
 </html>
