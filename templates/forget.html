@@ -14,7 +14,7 @@
         <h1>Forget?</h1>
         <form method="post">
             <div class="txt_field" id="email">
-                <input name="email" type="email" required>
+                <input name="email" type="text" required>
                 <span></span>
                 <label>Email</label>
             </div>
@@ -32,7 +32,10 @@
             <div class="signup_link">
                 Not have an account? <a href="#">Signup</a>
             </div>
-            <small class="warning">OTP is available on your email address</small>
+            <div class="warning" id="warning">
+                <small id="warningMessage"></small>
+                <button id="closeButton">Close</button>
+            </div>
         </form>
     </div>
 

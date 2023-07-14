@@ -3,14 +3,14 @@ var email = document.getElementById('email')
 var newPassword = document.getElementById('newPassword')
 var warning = document.querySelector('.warning')
 const warningMessage = document.querySelector('#warningMessage')
-const close = document.querySelector("#closeButton")
+const close_warning = document.querySelector("#closeButton")
 
 warning.style.display = "none"
 newPassword.style.display = "none"
 otp.style.display = "none"
 const form_button = document.getElementById('input')
 
-close.onclick = hidewarning;
+close_warning.onclick = hidewarning;
 form_button.onclick = showOtp;
 //function to close to warning
 function hidewarning() {
@@ -21,7 +21,7 @@ function showOtp() {
     const user = {
         email: document.querySelector('input[name="email"]').value,
     };
-    fetch(`http://${location.host}/users/verify`, {
+    fetch(`https://${location.host}/users/verify`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -56,7 +56,7 @@ function resetPassword() {
 
     }
     console.log(passwordData)
-    fetch(`http://${location.host}/forget`, {
+    fetch(`https://${location.host}/forget`, {
         method: "PUT",
         headers: {
             'Content-Type': 'application/json'
