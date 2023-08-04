@@ -75,7 +75,14 @@ ws.onmessage = function (event) {
 function sendMessage(event) {
     event.preventDefault()
     var input = document.getElementById("messageText")
-    ws.send(input.value)
+    var receiver = document.getElementById('receiver').value
+    var message = {
+        'message': input.value,
+        'sender':client_id,
+        'receiver': receiver
+    }
+    data = JSON.parse(message)
+    ws.send(data)
     input.value = ''
 }
 window.addEventListener('resize', handleResize);

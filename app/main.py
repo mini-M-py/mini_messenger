@@ -1,6 +1,6 @@
 import json
 from .routers import chat, user, auth
-from fastapi import FastAPI, Request, Response, WebSocket, WebSocketDisconnect, Depends, status, HTTPException
+from fastapi import FastAPI, Request, Depends, status, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from fastapi.exception_handlers import http_exception_handler
@@ -24,6 +24,7 @@ app.include_router(chat.router)
 app.include_router(user.router)
 app.include_router(auth.router)
 model.Base.metadata.create_all(bind=engine)
+# Create a WebSocketRoute instance and add it to the app
 
 # Custom exception handler for 401 Unauthorized
 async def unauthorized_exception_handler(request, exc):

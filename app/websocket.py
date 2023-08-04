@@ -1,20 +1,35 @@
 from fastapi import WebSocket
-
+import json
 
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: list[WebSocket] = []
+        self.active_connections = {}
 
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
+    async def connect(self, websocket: WebSocket, user_id:str):
+        try:
+            await websocket.accept()
+            self.active_connections[user_id] = websocket
+        except:
+            print('couldnot connect')
 
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
+    def disconnect(self, user_id:str):
+        try:
+            del self.active_connections[user_id]
+        except:
+            print('closing anyway')
+     
 
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
+    async def send_personal_message(self, message: str, user_id:int, sender:str):
+        websocket = self.active_connections.get(int(user_id))
+        
+        if websocket:
+            data = {
+                'sender':sender,
+                'message': message
+            }
+            data = json.dumps(data)
+            await websocket.send_text(data)
 
     async def broadcast(self, message: str):
-        for connection in self.active_connections:
+        for connection in self.active_connections.values():
             await connection.send_text(message)
