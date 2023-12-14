@@ -1,28 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="static/css/chat.css" rel="stylesheet" type="text/css">
     <title>Chat</title>
 </head>
-
 <body>
-    <div id="input">
-        <h1>Unique Chat</h1>
-        <h2>Your ID: <span id="ws-id"></span></h2>
-        <input type="text" id="receiver" placeholder="receiver"/>
-        <form action="" onsubmit="sendMessage(event)">
-            <input placeholder="message"type="text" id="messageText" autocomplete="off" />
-            <button id="send-button">Send</button>
-        </form>
-    </div>
-
-    <div id="conversation" class="conversation-container"></div>
+    <h1>WebSocket Chat</h1>
+    <h2>Your ID: <span id="ws-id"></span></h2>
+    <span></span>
+    <input type="text" placeholder="Receiver Id" id="receiver"/>
+    <form action="" onsubmit="sendMessage(event)">
+        <input type="text" id="messageText" autocomplete="off"/>
+        <button>Send</button>
+    </form>
+    <ul id='messages'>
+    </ul>
     <script>
+        const receiver = document.getElementById("receiver");
+        var token = localStorage.getItem('token');
+        var ws;
+
+        function initWebSocket() {
+            ws = new WebSocket(`ws://localhost:8000/ws/${receiver.value}?token=${token}`);
+            ws.onmessage = function(event) {
+                var messages = document.getElementById('messages');
+                var message = document.createElement('li');
+                var content = document.createTextNode(event.data);
+
+                message.appendChild(content);
+                messages.appendChild(message);
+            };
+        }
+
+        function sendMessage(event) {
+            var sendMessage = {
+                'message': document.getElementById("messageText").value
+        
+            };
+
+            ws.send(JSON.stringify(sendMessage));
+            document.getElementById("messageText").value = '';
+            event.preventDefault();
+
+            
+        }
+
+       
+        // Initialize WebSocket when the page loads
+        initWebSocket();
+
+        // Update WebSocket URL when the receiver value changes
+        receiver.addEventListener('change', function() {
+            ws.close();  // Close the existing connection
+            initWebSocket();  // Initialize a new connection with the updated URL
+        });
     </script>
 </body>
-
 </html>

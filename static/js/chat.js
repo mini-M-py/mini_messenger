@@ -21,11 +21,15 @@ function home(token){
         }
     })
 }
-token = localStorage.getItem('token')
+var token = localStorage.getItem('token')
+var sendBtn = document.getElementById('send-button')
+
+sendBtn.onclick = sendMessage
 console.log('token ' + token)
 home(token)
 document.querySelector("#ws-id").textContent = client_id
-var ws = new WebSocket(`ws://${location.host}/ws/${client_id}`)
+var ws = new WebSocket(`ws://${location.host}/ws/${client_id}`,{
+})
 ws.onmessage = function (event) {
     var token = localStorage.getItem('token')
     ws.setRequestHeader('Authorization', 'Bearer ' + token)
@@ -85,4 +89,5 @@ function sendMessage(event) {
     ws.send(data)
     input.value = ''
 }
+
 window.addEventListener('resize', handleResize);

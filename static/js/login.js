@@ -96,6 +96,7 @@ function login() {
             if (data.access_token) {
                 localStorage.setItem('token', data.access_token)
                 loadingButton()
+                window.location.href(`http://${location.host}/`)
             } else {
                 warningFunction('envalid Email and password')
                 loadingButton()
@@ -130,6 +131,9 @@ function signup() {
     username.style.display = 'block'
     forgetPassBtn.style.display = 'none'
     submitButtonText.innerText = "Next"
+    signinUPButton.onclick = function(){
+        signin()
+    }
     submitButton.onclick = function () {
         sendOTP()
         submitButton.onclick = createAccount

@@ -19,13 +19,14 @@ class ConnectionManager:
             print('closing anyway')
      
 
-    async def send_personal_message(self, message: str, user_id:int, sender:str):
-        websocket = self.active_connections.get(int(user_id))
+    async def send_personal_message(self, message: str, receiver_id:int, sender:str ,sender_name:str):
+        websocket = self.active_connections.get(int(receiver_id))
         
         if websocket:
             data = {
                 'sender':sender,
-                'message': message
+                'message': message,
+                'sender_name': sender_name
             }
             data = json.dumps(data)
             await websocket.send_text(data)

@@ -28,7 +28,7 @@ model.Base.metadata.create_all(bind=engine)
 
 # Custom exception handler for 401 Unauthorized
 async def unauthorized_exception_handler(request, exc):
-    if exc.status_code == status.HTTP_401_UNAUTHORIZED:
+    if exc.status_code == status.HTTP_401_UNAUTHORIZED or exc.status_code == status.HTTP_403_FORBIDDEN:
         return RedirectResponse(url="/Login")
 
     # Call the default exception handler for other cases
@@ -39,7 +39,7 @@ app.exception_handler(HTTPException)(unauthorized_exception_handler)
 
 #root
 @app.get("/")
-async def get(request: Request,  user_id: int = Depends(oauth2.get_current_user)):
+async def get(request: Request, ):#user_id: int = Depends(oauth2.get_current_user
     extensions = request.query_params.get("extensions", {})
     return templates.TemplateResponse("chat.html", {"request": request, "extensions": extensions})
 #login page
