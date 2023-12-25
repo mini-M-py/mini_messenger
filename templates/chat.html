@@ -29,6 +29,9 @@
                 message.appendChild(content);
                 messages.appendChild(message);
             };
+            ws.onerror = function(event){
+                window.location.href = 'http://localhost:8000/Login'
+            }
         }
 
         function sendMessage(event) {

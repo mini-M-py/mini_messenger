@@ -30,7 +30,7 @@ async def websocket_endpoint(websocket: WebSocket,  receiver_id: int, token: str
         sender_name = db.query(model.User.user_name).filter(model.User.id == current_id).scalar()
         receiver_id = db.query(model.User.id).filter(model.User.id == receiver_id).scalar()
         if receiver_id == None:
-            raise HTTPException(status_code = HTTP_401_UNAUTHORIZED, detail='Invalid receiver'
+            raise HTTPException(status_code =status.HTTP_401_UNAUTHORIZED, detail='Invalid receiver')
 
 
         
@@ -47,7 +47,7 @@ async def websocket_endpoint(websocket: WebSocket,  receiver_id: int, token: str
 
                 message_text = data.get("message", "")
                 await manager.send_personal_message(message_text, receiver, sender, sender_name)
-                new_chat = db.query.Chat(sender_id= current_id, receiver_id= receiver_id, chat = message_text)
+                new_chat = model.Chat(sender_id= current_id, receiver_id= receiver_id, chat = message_text)
                 db.add(new_chat)
                 db.commit()
         except WebSocketDisconnect:
