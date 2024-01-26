@@ -1,5 +1,5 @@
 from jose import JWTError, jwt
-from fastapi import Depends, Request, status, HTTPException
+from fastapi import Depends, Request, status, HTTPException, WebSocketException
 from . import schemas
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
@@ -36,4 +36,11 @@ def verify_access_token(token: str, credential_exception):
 def get_current_user(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"unauthorized",
                                           headers={"WWW-Authenticate":"Bearer"})
+    return verify_access_token(token, credentials_exception)
+
+def get_current_user_websocket(token: str = Depends(oauth2_scheme)):
+    credentials_exception = WebSocketException(
+            code=status.HTTP_401_UNAUTHORIZED,
+            reason ="unauthorized")
+
     return verify_access_token(token, credentials_exception)

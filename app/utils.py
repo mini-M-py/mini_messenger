@@ -1,6 +1,7 @@
 from fastapi import status, HTTPException
 from passlib.context import CryptContext
 from cachetools import TTLCache
+from cryptography.fernet import Fernet
 import string
 import random
 import time
@@ -36,3 +37,19 @@ def verify_otp(email: str, otp:str) -> bool:
     del cache[email]
 
     return True
+
+key = Fernet.generate_key()
+fernet = Fernet(key)
+
+def encrypt(id):
+    id = str(id)
+    enc_id = fernet.encrypt(id.encode())
+    return enc_id
+
+def decrypt(enc_id):
+    try:
+        id = fernet.decrypt(enc_id).decode()
+        return id
+    except:
+        return None
+    

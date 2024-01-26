@@ -64,8 +64,14 @@ def delete_user(user: schemas.delete_user, db: Session = Depends(get_db), user_i
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.get('/',response_model=List[schemas.user_out])
+@router.get('/')
 def get_user( db: Session = Depends(get_db), user_id: int = Depends(oauth2.get_current_user),search: Optional[str] = ""):
     users = db.query(model.User).filter(model.User.user_name.contains(search)).all()
 
-    return users
+    enc_user = []
+    for user in users:
+        enc_id = utils.encrypt(user.id)
+
+        enc_user.append({"id": enc_id, "user_name": user.user_name})
+
+    return enc_user

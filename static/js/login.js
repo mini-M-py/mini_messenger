@@ -96,7 +96,7 @@ function login() {
             if (data.access_token) {
                 localStorage.setItem('token', data.access_token)
                 loadingButton()
-                window.location.href(`http://${location.host}/`)
+                window.location.href = (`http://${location.host}/`)
             } else {
                 warningFunction('envalid Email and password')
                 loadingButton()

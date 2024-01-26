@@ -52,5 +52,4 @@ async def get(request: Request):
 @app.get('/forget_password')
 async def get(request: Request):
     extensions = request.query_params.get('extensions', {})
-    return templates.TemplateResponse("forget.html", {"request":request, "extensions":extensions})
-
+    return templates.TemplateResponse("forget.html", {"request":request, "extensions":extensions}) 
