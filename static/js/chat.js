@@ -13,6 +13,7 @@ function changePerson(person, id) {
     document.getElementById('selected-person').textContent = person;
     document.getElementById('dropdown-content').style.display = 'none';
     document.getElementById('chat-messages').innerHTML = '';
+    get_messages(id)
 
     //ws.close();
     connectReceiver(id)
@@ -22,13 +23,16 @@ function getPerson(){
         headers: {
             'Authorization' : 'Bearer ' + token,
             'Content-Type' : 'application/json'
-        }
+        },
     }).then(res => {
-        if(res.status === 401){
-            window.location.href = 'http://localhost:8000/Login'
-        }else{
+        console.log(res.status)
+        if(res.status === 200){
             return res.json()
-        }
+        }else{
+         
+            //window.location.href = 'http://localhost:8000/Login'
+  
+         }
     }).then(data => {
         data.forEach(person => {
             markup = `<span class = "dropdown-item" onclick = "changePerson('${person.user_name}', '${person.id}')"
@@ -38,6 +42,33 @@ function getPerson(){
         })
         })
 }
+
+function get_messages(receiver){
+    fetch(`http://localhost:8000/message/${receiver}`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+        }
+        }).then(res => {
+            if(res.status === 200){
+                return res.json()
+            }else{
+                window.location.href = 'http://localhost:8000/Login'
+            }
+        }).then(data => {
+            data.forEach(text => {
+                var messages = document.createElement('p')
+                messages.textContent = `${text.sender_name}: ${text.message}`
+                if(text.sender_name === "You"){
+                    messages.style.color = '#4CAF50'
+                }else{
+                    messages.style.color = '#92C7CF'
+                }
+                chatMessages.appendChild(messages)
+            })
+        })
+    }
+
 
 function sendMessage() {
     const messageInput = document.getElementById('message-input');
@@ -71,4 +102,5 @@ function connectReceiver(id) {
        window.location.href = 'http://localhost:8000/Login'
     }
 }
+get_messages(1)
 getPerson()        
