@@ -19,18 +19,23 @@ function changePerson(person, id) {
     connectReceiver(id)
 }
 function getPerson(){
-    fetch('http://localhost:8000/users', {
+    var url = 'http://localhost:8000/users/'
+    fetch(url, {
         headers: {
             'Authorization' : 'Bearer ' + token,
             'Content-Type' : 'application/json'
         },
-    }).then(res => {
-        console.log(res.status)
+         }).then(res => {
         if(res.status === 200){
-            return res.json()
+            if(url === res.url){
+                return res.json()
+            }
+            else{
+                window.location.href = res.url
+            }
+            
         }else{
-         
-            //window.location.href = 'http://localhost:8000/Login'
+           window.location.href = res.url 
   
          }
     }).then(data => {
@@ -84,8 +89,6 @@ function sendMessage() {
     chatMessages.appendChild(newMessage);
     ws.send(JSON.stringify(message));
     
-    document.getElementById("messageText").value = '';
-    event.preventDefault();
     messageInput.value = '';
 }
 
@@ -94,6 +97,7 @@ function connectReceiver(id) {
     ws.onmessage = function(event) {
         newMessage = document.createElement('p')
         var data = JSON.parse(event.data)
+        console.log(data)
         newMessage.textContent =`${data.sender_name}: ${data.message}`;
         newMessage.style.color = "#063970"
         chatMessages.appendChild(newMessage);
@@ -102,5 +106,4 @@ function connectReceiver(id) {
        window.location.href = 'http://localhost:8000/Login'
     }
 }
-get_messages(1)
 getPerson()        
