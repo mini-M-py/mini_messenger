@@ -71,7 +71,8 @@ def get_user( db: Session = Depends(get_db), user_id: int = Depends(oauth2.get_c
     enc_user = []
     for user in users:
         enc_id = utils.encrypt(user.id)
+        uniqueId = utils.uniqueId(user.id)
 
-        enc_user.append({"id": enc_id, "user_name": user.user_name})
+        enc_user.append({"id": enc_id,"uniqueId": uniqueId, "user_name": user.user_name})
 
     return enc_user

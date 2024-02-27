@@ -23,9 +23,11 @@ class ConnectionManager:
     async def send_personal_message(self, message: str, receiver_id:int, sender:str ,sender_name:str):
         websocket = self.active_connections.get(int(receiver_id))
         enc_sender = str(utils.encrypt(sender))
+        uniqueId = utils.uniqueId(sender)
         if websocket:
             data = {
                 'sender':enc_sender,
+                'id': uniqueId,
                 'message': message,
                 'sender_name': sender_name
             }

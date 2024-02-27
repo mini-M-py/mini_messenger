@@ -1,4 +1,5 @@
 var ws;
+currentConnection = 'none'
 const token = localStorage.getItem('token');
 var chatMessages = document.getElementById('chat-messages');
 var newMessage 
@@ -8,11 +9,12 @@ function toggleDropdown() {
      document.getElementById('dropdown-content').style.display = 'block';
 }
 
-function changePerson(person, id) {
+function changePerson(person, id, uniqueId) {
     document.getElementById('current-person').textContent = `Chatting with: ${person}`;
     document.getElementById('selected-person').textContent = person;
     document.getElementById('dropdown-content').style.display = 'none';
     document.getElementById('chat-messages').innerHTML = '';
+    currentConnection = uniqueId
     get_messages(id)
 
     //ws.close();
@@ -40,7 +42,7 @@ function getPerson(){
          }
     }).then(data => {
         data.forEach(person => {
-            markup = `<span class = "dropdown-item" onclick = "changePerson('${person.user_name}', '${person.id}')"
+            markup = `<span class = "dropdown-item" onclick = "changePerson('${person.user_name}', '${person.id}', '${person.uniqueId}')"
             >${person.user_name}</span>`
 
             document.querySelector('#dropdown-content').insertAdjacentHTML('beforeend', markup)
@@ -97,10 +99,13 @@ function connectReceiver(id) {
     ws.onmessage = function(event) {
         newMessage = document.createElement('p')
         var data = JSON.parse(event.data)
-        console.log(data)
-        newMessage.textContent =`${data.sender_name}: ${data.message}`;
-        newMessage.style.color = "#063970"
-        chatMessages.appendChild(newMessage);
+        if(data.id != currentConnection){
+            alert(`${data.sender_name} send a message`)
+        }else{
+            newMessage.textContent =`${data.sender_name}: ${data.message}`;
+            newMessage.style.color = "#063970"
+            chatMessages.appendChild(newMessage);
+        }
     }
     ws.onerror = function(event){
        window.location.href = 'http://localhost:8000/Login'

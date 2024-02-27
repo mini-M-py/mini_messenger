@@ -2,6 +2,7 @@ from fastapi import status, HTTPException
 from passlib.context import CryptContext
 from cachetools import TTLCache
 from cryptography.fernet import Fernet
+import hashlib
 import string
 import random
 import time
@@ -52,4 +53,8 @@ def decrypt(enc_id):
         return id
     except:
         return None
+def uniqueId(id):
+    id = str(id)
+    return hashlib.sha256(id.encode()).hexdigest()
+
     
