@@ -89,14 +89,14 @@ function login() {
         formData.append('password', document.querySelector('input[name="password"]').value)
         loginData = new URLSearchParams(formData)
         loadingButton()
-        fetch(`http://${location.host}/login`, {
+        fetch(`https://${location.host}/login`, {
             method: 'POST',
             body: loginData
         }).then(res => res.json()).then(data => {
             if (data.access_token) {
                 localStorage.setItem('token', data.access_token)
                 loadingButton()
-                window.location.href = (`http://${location.host}/`)
+                window.location.href = (`https://${location.host}/`)
             } else {
                 warningFunction('envalid Email and password')
                 loadingButton()
@@ -159,7 +159,7 @@ function sendOTP() {
             email: document.querySelector('input[name="email"]').value
         }
         loadingButton()
-        fetch(`http://${location.host}/users/verify`, {
+        fetch(`https://${location.host}/users/verify`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -197,7 +197,7 @@ function createAccount() {
             otp: document.querySelector('input[name="OTP"]').value
         }
         loadingButton()
-        fetch(`http://${location.host}/users`, {
+        fetch(`https://${location.host}/users`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -228,7 +228,7 @@ function resetPassword() {
             otp: document.querySelector('input[name="OTP"]').value,
 
         }
-        fetch(`http://${location.host}/forget`, {
+        fetch(`https://${location.host}/forget`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'

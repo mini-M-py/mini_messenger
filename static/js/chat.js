@@ -21,7 +21,7 @@ function changePerson(person, id, uniqueId) {
     connectReceiver(id)
 }
 function getPerson(){
-    var url = 'http://localhost:8000/users/'
+    var url = `https://${location.host}/users/`
     fetch(url, {
         headers: {
             'Authorization' : 'Bearer ' + token,
@@ -51,7 +51,7 @@ function getPerson(){
 }
 
 function get_messages(receiver){
-    fetch(`http://localhost:8000/message/${receiver}`, {
+    fetch(`https://${location.host}/message/${receiver}`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token
@@ -60,7 +60,7 @@ function get_messages(receiver){
             if(res.status === 200){
                 return res.json()
             }else{
-                window.location.href = 'http://localhost:8000/Login'
+                window.location.href = `https://${location.host}/Login`
             }
         }).then(data => {
             data.forEach(text => {
@@ -95,7 +95,7 @@ function sendMessage() {
 }
 
 function connectReceiver(id) {
-    ws = new WebSocket(`ws://localhost:8000/ws/${id}?token=${token}`);
+    ws = new WebSocket(`wss://${location.host}/ws/${id}?token=${token}`);
     ws.onmessage = function(event) {
         newMessage = document.createElement('p')
         var data = JSON.parse(event.data)
@@ -108,7 +108,7 @@ function connectReceiver(id) {
         }
     }
     ws.onerror = function(event){
-       window.location.href = 'http://localhost:8000/Login'
+       window.location.href = `https://${location.host}/Login`
     }
 }
 getPerson()        
