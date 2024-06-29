@@ -211,6 +211,7 @@ function createAccount() {
                 warningFunction('User has been created')
                 submitButtonText.innerText = "Login"
                 submitButton.onclick = signin
+                window.location.href = (`https://${location.host}/`)
                 loadingButton()
             } else {
                 warningFunction('Invalid OTP')
